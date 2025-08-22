@@ -22,6 +22,7 @@ export interface ExamState {
   totalPoints: number;
   timeStarted?: Date;
   timeCompleted?: Date;
+  isParticipantValidated: boolean;
 }
 
 const initialState: ExamState = {
@@ -34,13 +35,20 @@ const initialState: ExamState = {
   totalPoints: 0,
   timeStarted: undefined,
   timeCompleted: undefined,
+  isParticipantValidated: false,
 };
 
 export const examSlice = createAppSlice({
   name: 'exam',
   initialState,
   reducers: create => ({
+    validateParticipantAccess: create.reducer((state, action: PayloadAction<boolean>) => {
+      state.isParticipantValidated = action.payload;
+    }),
     startExam: create.reducer((state) => {
+      if (!state.isParticipantValidated) {
+        throw new Error('Participant must be validated before starting exam');
+      }
       state.isStarted = true;
       state.timeStarted = new Date();
       state.currentQuestionIndex = 0;
@@ -53,26 +61,41 @@ export const examSlice = createAppSlice({
       state.totalPoints = action.payload.reduce((total, question) => total + question.points, 0);
     }),
     setAnswer: create.reducer((state, action: PayloadAction<{ questionId: number; answer: string | string[] }>) => {
+      if (!state.isParticipantValidated) {
+        throw new Error('Participant must be validated before answering questions');
+      }
       const { questionId, answer } = action.payload;
       state.answers[questionId] = answer;
     }),
     nextQuestion: create.reducer((state) => {
+      if (!state.isParticipantValidated) {
+        throw new Error('Participant must be validated before navigating questions');
+      }
       if (state.currentQuestionIndex < state.questions.length - 1) {
         state.currentQuestionIndex += 1;
       }
     }),
     previousQuestion: create.reducer((state) => {
+      if (!state.isParticipantValidated) {
+        throw new Error('Participant must be validated before navigating questions');
+      }
       if (state.currentQuestionIndex > 0) {
         state.currentQuestionIndex -= 1;
       }
     }),
     goToQuestion: create.reducer((state, action: PayloadAction<number>) => {
+      if (!state.isParticipantValidated) {
+        throw new Error('Participant must be validated before navigating questions');
+      }
       const questionIndex = action.payload;
       if (questionIndex >= 0 && questionIndex < state.questions.length) {
         state.currentQuestionIndex = questionIndex;
       }
     }),
     completeExam: create.reducer((state) => {
+      if (!state.isParticipantValidated) {
+        throw new Error('Participant must be validated before completing exam');
+      }
       state.isCompleted = true;
       state.timeCompleted = new Date();
       // Calculate score based on correct answers
@@ -105,6 +128,7 @@ export const examSlice = createAppSlice({
 });
 
 export const {
+  validateParticipantAccess,
   startExam,
   setQuestions,
   setAnswer,

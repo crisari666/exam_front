@@ -62,7 +62,6 @@ export const CodeValidationForm: React.FC = () => {
         justifyContent: 'center',
         alignItems: 'center',
         minHeight: '60vh',
-        padding: 3
       }}
     >
       <Paper

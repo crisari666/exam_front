@@ -28,6 +28,7 @@ import {
   resetExam,
 } from '../examSlice';
 import { RootState } from '../../../app/store';
+import { ParticipantGuard } from '../../participant/components';
 import FillGapQuestion from './FillGapQuestion';
 import MultipleChoiceQuestion from './MultipleChoiceQuestion';
 import ReadingQuestion from './ReadingQuestion';
@@ -51,29 +52,60 @@ const ExamPage: React.FC = () => {
   }, [questions, dispatch, examState.questions.length]);
 
   const handleStartExam = () => {
-    dispatch(startExam());
-    setShowInstructions(false);
+    try {
+      dispatch(startExam());
+      setShowInstructions(false);
+    } catch (error) {
+      console.error('Failed to start exam:', error);
+      // Show error message to user
+      alert('You must be a validated participant to start the exam. Please validate your participant code first.');
+    }
   };
 
   const handleAnswerChange = (questionId: number, answer: string | string[]) => {
-    dispatch(setAnswer({ questionId, answer }));
+    try {
+      dispatch(setAnswer({ questionId, answer }));
+    } catch (error) {
+      console.error('Failed to set answer:', error);
+      alert('Session expired. Please validate your participant code again.');
+    }
   };
 
   const handleNext = () => {
-    dispatch(nextQuestion());
+    try {
+      dispatch(nextQuestion());
+    } catch (error) {
+      console.error('Failed to navigate to next question:', error);
+      alert('Session expired. Please validate your participant code again.');
+    }
   };
 
   const handlePrevious = () => {
-    dispatch(previousQuestion());
+    try {
+      dispatch(previousQuestion());
+    } catch (error) {
+      console.error('Failed to navigate to previous question:', error);
+      alert('Session expired. Please validate your participant code again.');
+    }
   };
 
   const handleGoToQuestion = (questionIndex: number) => {
-    dispatch(goToQuestion(questionIndex));
+    try {
+      dispatch(goToQuestion(questionIndex));
+    } catch (error) {
+      console.error('Failed to navigate to question:', error);
+      alert('Session expired. Please validate your participant code again.');
+    }
   };
 
   const handleSubmitExam = () => {
-    dispatch(completeExam());
-    setShowSubmitDialog(false);
+    try {
+      dispatch(completeExam());
+      setShowSubmitDialog(false);
+    } catch (error) {
+      console.error('Failed to submit exam:', error);
+      alert('Session expired. Please validate your participant code again.');
+    }
   };
 
   const handleResetExam = () => {
@@ -143,173 +175,181 @@ const ExamPage: React.FC = () => {
     }
   };
 
-  if (isLoading) {
-    console.log('ExamPage: Rendering loading state');
-    return (
-      <>
-        <AppHeader />
-        <Container maxWidth="lg" sx={{ mt: 4 }}>
-          <Box sx={{ mb: 2 }}>
-            <Typography variant="h6" sx={{ mt: 2 }}>
-              Loading exam...
-            </Typography>
-          </Box>
-          <LinearProgress />
-        </Container>
-      </>
-    );
-  }
-
-  if (error) {
-    return (
-      <>
-        <AppHeader />
-        <Container maxWidth="lg" sx={{ mt: 4 }}>
-          <Box sx={{ mb: 2 }}>
-            <Typography variant="h6" sx={{ mt: 2 }}>
-              Error loading exam
-            </Typography>
-          </Box>
-          <Alert severity="error">
-            Error loading exam. Please try again later.
-          </Alert>
-        </Container>
-      </>
-    );
-  }
-
-  if (showInstructions) {
-    console.log('ExamPage: Rendering instructions state');
-    return <ExamInstructions onStart={handleStartExam} />;
-  }
-
-  if (examState.isCompleted) {
-    const percentage = (examState.score / examState.totalPoints) * 100;
-    const isPassed = percentage >= 65;
-
-    return (
-      <>
-        <AppHeader />
-        <Container maxWidth="lg" sx={{ mt: 4 }}>
-          <Paper sx={{ p: 4, textAlign: 'center' }}>
+  const renderExamContent = () => {
+    if (isLoading) {
+      console.log('ExamPage: Rendering loading state');
+      return (
+        <>
+          <AppHeader />
+          <Container maxWidth="lg" sx={{ mt: 4 }}>
             <Box sx={{ mb: 2 }}>
-              <Typography variant="h4" gutterBottom>
-                {isPassed ? '🎉 Congratulations!' : '📝 Exam Results'}
+              <Typography variant="h6" sx={{ mt: 2 }}>
+                Loading exam...
               </Typography>
             </Box>
-            
-            <Typography variant="h6" color={isPassed ? 'success.main' : 'error.main'} gutterBottom>
-              {isPassed ? 'You passed the exam!' : 'You did not pass the exam'}
-            </Typography>
-            
-            <Box sx={{ my: 3 }}>
-              <Typography variant="h5">
-                Score: {examState.score} / {examState.totalPoints} points
-              </Typography>
-              <Typography variant="h6" color="text.secondary">
-                Percentage: {percentage.toFixed(1)}%
-              </Typography>
-              <Typography variant="body1" color="text.secondary">
-                Passing score: 65%
+            <LinearProgress />
+          </Container>
+        </>
+      );
+    }
+
+    if (error) {
+      return (
+        <>
+          <AppHeader />
+          <Container maxWidth="lg" sx={{ mt: 4 }}>
+            <Box sx={{ mb: 2 }}>
+              <Typography variant="h6" sx={{ mt: 2 }}>
+                Error loading exam
               </Typography>
             </Box>
-            
-            <Button variant="contained" onClick={handleResetExam} sx={{ mr: 2 }}>
-              Take Exam Again
-            </Button>
-          </Paper>
-        </Container>
-      </>
-    );
-  }
+            <Alert severity="error">
+              Error loading exam. Please try again later.
+            </Alert>
+          </Container>
+        </>
+      );
+    }
 
-  if (!examState.isStarted || !examState.questions.length) {
-    console.log('ExamPage: Exam not started or no questions');
-    return null;
-  }
+    if (showInstructions) {
+      console.log('ExamPage: Rendering instructions state');
+      return <ExamInstructions onStart={handleStartExam} />;
+    }
 
-  const answeredQuestions = Object.keys(examState.answers).length;
-  const progress = (answeredQuestions / examState.questions.length) * 100;
+    if (examState.isCompleted) {
+      const percentage = (examState.score / examState.totalPoints) * 100;
+      const isPassed = percentage >= 65;
 
-  console.log('ExamPage: Rendering main exam state');
-
-  return (
-    <>
-      <AppHeader />
-      <Container maxWidth="lg" sx={{ mt: 4 }}>
-        <Paper sx={{ p: 3, mb: 3 }}>
-          <Box sx={{ mb: 2 }}>
-            <LinearProgress variant="determinate" value={progress} sx={{ height: 8, borderRadius: 4 }} />
-            <Typography variant="body2" color="text.secondary" sx={{ mt: 1 }}>
-              Progress: {answeredQuestions} / {examState.questions.length} questions answered
-            </Typography>
-          </Box>
-          
-          <Stepper activeStep={examState.currentQuestionIndex} sx={{ mb: 3 }}>
-            {examState.questions.map((_, index) => (
-              <Step key={index}>
-                <StepLabel>
-                  <Button
-                    size="small"
-                    onClick={() => handleGoToQuestion(index)}
-                    sx={{ minWidth: 'auto' }}
-                  >
-                    {index + 1}
-                  </Button>
-                </StepLabel>
-              </Step>
-            ))}
-          </Stepper>
-        </Paper>
-
-        {renderQuestion()}
-
-        <Box sx={{ display: 'flex', justifyContent: 'space-between', mt: 3 }}>
-          <Button
-            variant="outlined"
-            onClick={handlePrevious}
-            disabled={examState.currentQuestionIndex === 0}
-          >
-            Previous
-          </Button>
-          
-          <Box>
-            {examState.currentQuestionIndex < examState.questions.length - 1 ? (
-              <Button variant="contained" onClick={handleNext}>
-                Next
+      return (
+        <>
+          <AppHeader />
+          <Container maxWidth="lg" sx={{ mt: 4 }}>
+            <Paper sx={{ p: 4, textAlign: 'center' }}>
+              <Box sx={{ mb: 2 }}>
+                <Typography variant="h4" gutterBottom>
+                  {isPassed ? '🎉 Congratulations!' : '📝 Exam Results'}
+                </Typography>
+              </Box>
+              
+              <Typography variant="h6" color={isPassed ? 'success.main' : 'error.main'} gutterBottom>
+                {isPassed ? 'You passed the exam!' : 'You did not pass the exam'}
+              </Typography>
+              
+              <Box sx={{ my: 3 }}>
+                <Typography variant="h5">
+                  Score: {examState.score} / {examState.totalPoints} points
+                </Typography>
+                <Typography variant="h6" color="text.secondary">
+                  Percentage: {percentage.toFixed(1)}%
+                </Typography>
+                <Typography variant="body1" color="text.secondary">
+                  Passing score: 65%
+                </Typography>
+              </Box>
+              
+              <Button variant="contained" onClick={handleResetExam} sx={{ mr: 2 }}>
+                Take Exam Again
               </Button>
-            ) : (
-              <Button
-                variant="contained"
-                color="success"
-                onClick={() => setShowSubmitDialog(true)}
-                disabled={answeredQuestions < examState.questions.length}
-              >
+            </Paper>
+          </Container>
+        </>
+      );
+    }
+
+    if (!examState.isStarted || !examState.questions.length) {
+      console.log('ExamPage: Exam not started or no questions');
+      return null;
+    }
+
+    const answeredQuestions = Object.keys(examState.answers).length;
+    const progress = (answeredQuestions / examState.questions.length) * 100;
+
+    console.log('ExamPage: Rendering main exam state');
+
+    return (
+      <>
+        <AppHeader />
+        <Container maxWidth="lg" sx={{ mt: 4 }}>
+          <Paper sx={{ p: 3, mb: 3 }}>
+            <Box sx={{ mb: 2 }}>
+              <LinearProgress variant="determinate" value={progress} sx={{ height: 8, borderRadius: 4 }} />
+              <Typography variant="body2" color="text.secondary" sx={{ mt: 1 }}>
+                Progress: {answeredQuestions} / {examState.questions.length} questions answered
+              </Typography>
+            </Box>
+            
+            <Stepper activeStep={examState.currentQuestionIndex} sx={{ mb: 3 }}>
+              {examState.questions.map((_, index) => (
+                <Step key={index}>
+                  <StepLabel>
+                    <Button
+                      size="small"
+                      onClick={() => handleGoToQuestion(index)}
+                      sx={{ minWidth: 'auto' }}
+                    >
+                      {index + 1}
+                    </Button>
+                  </StepLabel>
+                </Step>
+              ))}
+            </Stepper>
+          </Paper>
+
+          {renderQuestion()}
+
+          <Box sx={{ display: 'flex', justifyContent: 'space-between', mt: 3 }}>
+            <Button
+              variant="outlined"
+              onClick={handlePrevious}
+              disabled={examState.currentQuestionIndex === 0}
+            >
+              Previous
+            </Button>
+            
+            <Box>
+              {examState.currentQuestionIndex < examState.questions.length - 1 ? (
+                <Button variant="contained" onClick={handleNext}>
+                  Next
+                </Button>
+              ) : (
+                <Button
+                  variant="contained"
+                  color="success"
+                  onClick={() => setShowSubmitDialog(true)}
+                  disabled={answeredQuestions < examState.questions.length}
+                >
+                  Submit Exam
+                </Button>
+              )}
+            </Box>
+          </Box>
+
+          <Dialog open={showSubmitDialog} onClose={() => setShowSubmitDialog(false)}>
+            <DialogTitle>Submit Exam</DialogTitle>
+            <DialogContent>
+              <Typography>
+                Are you sure you want to submit your exam? You cannot change your answers after submission.
+              </Typography>
+              <Typography variant="body2" color="text.secondary" sx={{ mt: 1 }}>
+                You have answered {answeredQuestions} out of {examState.questions.length} questions.
+              </Typography>
+            </DialogContent>
+            <DialogActions>
+              <Button onClick={() => setShowSubmitDialog(false)}>Cancel</Button>
+              <Button onClick={handleSubmitExam} color="success" variant="contained">
                 Submit Exam
               </Button>
-            )}
-          </Box>
-        </Box>
+            </DialogActions>
+          </Dialog>
+        </Container>
+      </>
+    );
+  };
 
-        <Dialog open={showSubmitDialog} onClose={() => setShowSubmitDialog(false)}>
-          <DialogTitle>Submit Exam</DialogTitle>
-          <DialogContent>
-            <Typography>
-              Are you sure you want to submit your exam? You cannot change your answers after submission.
-            </Typography>
-            <Typography variant="body2" color="text.secondary" sx={{ mt: 1 }}>
-              You have answered {answeredQuestions} out of {examState.questions.length} questions.
-            </Typography>
-          </DialogContent>
-          <DialogActions>
-            <Button onClick={() => setShowSubmitDialog(false)}>Cancel</Button>
-            <Button onClick={handleSubmitExam} color="success" variant="contained">
-              Submit Exam
-            </Button>
-          </DialogActions>
-        </Dialog>
-      </Container>
-    </>
+  return (
+    <ParticipantGuard>
+      {renderExamContent()}
+    </ParticipantGuard>
   );
 };
 

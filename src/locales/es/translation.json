@@ -102,6 +102,13 @@
         "startExam": "Comenzar Examen",
         "logout": "Cerrar Sesión",
         "ready": "Ahora estás listo para tomar tu examen de inglés"
+      },
+      "guard": {
+        "validating": "Validando participante...",
+        "validationRequired": "Validación de Participante Requerida",
+        "validationDescription": "Debes validar tu código de participante antes de acceder al examen.",
+        "participant": "Participante",
+        "code": "Código"
       }
     },
     "exam": {

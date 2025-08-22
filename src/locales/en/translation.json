@@ -102,6 +102,13 @@
         "startExam": "Start Exam",
         "logout": "Logout",
         "ready": "You are now ready to take your English language exam"
+      },
+      "guard": {
+        "validating": "Validating participant...",
+        "validationRequired": "Participant Validation Required",
+        "validationDescription": "You must validate your participant code before accessing the exam.",
+        "participant": "Participant",
+        "code": "Code"
       }
     },
     "exam": {

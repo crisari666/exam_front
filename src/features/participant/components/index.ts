@@ -1,2 +1,3 @@
-export { CodeValidationForm } from './CodeValidationForm.tsx';
-export { ParticipantInfo } from './ParticipantInfo.tsx';
+export { CodeValidationForm } from './CodeValidationForm';
+export { ParticipantInfo } from './ParticipantInfo';
+export { default as ParticipantGuard } from './ParticipantGuard';

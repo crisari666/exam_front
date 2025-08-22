@@ -67,4 +67,18 @@ export const participantSlice = createSlice({
 });
 
 export const { clearParticipant, clearError, resetValidation } = participantSlice.actions;
+
+// Selectors
+export const selectIsParticipantValidated = (state: { participant: ParticipantState }) => 
+  state.participant.isCodeValidated && state.participant.currentParticipant !== null;
+
+export const selectCurrentParticipant = (state: { participant: ParticipantState }) => 
+  state.participant.currentParticipant;
+
+export const selectParticipantError = (state: { participant: ParticipantState }) => 
+  state.participant.error;
+
+export const selectIsParticipantLoading = (state: { participant: ParticipantState }) => 
+  state.participant.isLoading;
+
 export default participantSlice.reducer;
