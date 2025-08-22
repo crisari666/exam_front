@@ -6,7 +6,6 @@ import {
   Box,
   Container,
 } from '@mui/material';
-import { useTranslation } from 'react-i18next';
 import { LanguageSwitcher } from './LanguageSwitcher';
 import logoImage from '../../assets/img/logo.png';
 

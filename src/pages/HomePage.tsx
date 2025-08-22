@@ -1,26 +1,23 @@
 import type { FC } from 'react';
-import { useTranslation } from 'react-i18next';
+import { useSelector } from 'react-redux';
 import { AppHeader } from '../shared/components';
+import { CodeValidationForm, ParticipantInfo } from '../features/participant/components';
+import { RootState } from '../app/store';
 import './Pages.css';
 
 const HomePage: FC = () => {
-  const { t } = useTranslation();
+  const { isCodeValidated } = useSelector((state: RootState) => state.participant);
 
   return (
     <div className="home-page">
-      <AppHeader title={t('pages.home.title')} />
+      <AppHeader title="International English Language Exam" />
       
-      <main style={{ padding: '24px' }}>
-        <h2>{t('pages.home.subtitle')}</h2>
-        <p>{t('pages.home.description')}</p>
-        
-        <nav>
-          <ul>
-            <li><a href="/about">{t('navigation.about')}</a></li>
-            <li><a href="/dashboard">{t('navigation.dashboard')}</a></li>
-            <li><a href="/exam">{t('navigation.exam')}</a></li>
-          </ul>
-        </nav>
+      <main>
+        {isCodeValidated ? (
+          <ParticipantInfo />
+        ) : (
+          <CodeValidationForm />
+        )}
       </main>
     </div>
   );

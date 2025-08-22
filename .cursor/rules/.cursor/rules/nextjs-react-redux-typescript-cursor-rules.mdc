@@ -114,6 +114,8 @@ This comprehensive guide outlines best practices, conventions, and standards for
     Styling Guidelines
     - Use material ui for styling
 
+    Localization
+
     State Management
     Local State
     - Use useState for component-level state
@@ -171,6 +173,7 @@ This comprehensive guide outlines best practices, conventions, and standards for
     - Use proper authentication methods.
 
     Internationalization (i18n)
+    - Never write hardcode text string, always use the localization files
     - Use next-i18next for translations
     - Implement proper locale detection
     - Use proper number and date formatting

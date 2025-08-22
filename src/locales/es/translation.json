@@ -85,6 +85,22 @@
       "error": "Error al cargar citas",
       "refresh": "Actualizar Citas"
     },
+    "participant": {
+      "codeValidation": {
+        "title": "Acceso de Participante",
+        "description": "Por favor, ingresa tu código de acceso para comenzar el examen",
+        "codeLabel": "Código de Acceso",
+        "submit": "Validar Código",
+        "help": "¿Necesitas ayuda? Contacta a tu administrador del examen"
+      },
+      "info": {
+        "welcome": "¡Bienvenido!",
+        "participantId": "ID del Participante",
+        "startExam": "Comenzar Examen",
+        "logout": "Cerrar Sesión",
+        "ready": "Ahora estás listo para tomar tu examen de inglés"
+      }
+    },
     "exam": {
       "instructions": {
         "title": "Examen Internacional de Inglés",
