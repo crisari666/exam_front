@@ -32,6 +32,7 @@ const DashboardPage: FC = () => {
           <ul>
             <li><a href="/">{t('navigation.home')}</a></li>
             <li><a href="/about">{t('navigation.about')}</a></li>
+            <li><a href="/exam">{t('navigation.exam')}</a></li>
           </ul>
         </nav>
       </main>

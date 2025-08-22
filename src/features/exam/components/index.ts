@@ -1,0 +1,9 @@
+export { default as ExamPage } from './ExamPage';
+export { default as ExamInstructions } from './ExamInstructions';
+export { default as ExamLanguageSwitcher } from './ExamLanguageSwitcher';
+export { default as FillGapQuestion } from './FillGapQuestion';
+export { default as MultipleChoiceQuestion } from './MultipleChoiceQuestion';
+export { default as ReadingQuestion } from './ReadingQuestion';
+export { default as MatchingQuestion } from './MatchingQuestion';
+export { default as VerbToBeQuestion } from './VerbToBeQuestion';
+export { default as WritingQuestion } from './WritingQuestion';

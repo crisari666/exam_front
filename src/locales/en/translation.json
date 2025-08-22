@@ -24,6 +24,7 @@
     "home": "Home",
     "about": "About",
     "dashboard": "Dashboard",
+    "exam": "Exam",
     "language": "Language",
     "english": "English",
     "spanish": "Spanish"
@@ -44,6 +45,30 @@
       "progress": "Your Progress",
       "recent": "Recent Activities",
       "stats": "Statistics"
+    },
+    "exam": {
+      "title": "International English Language Exam",
+      "start": "Start Exam",
+      "loading": "Loading exam...",
+      "error": "Error loading exam. Please try again later.",
+      "progress": "Progress: {{answered}} / {{total}} questions answered",
+      "previous": "Previous",
+      "next": "Next",
+      "submit": "Submit Exam",
+      "submitConfirm": "Submit Exam",
+      "submitDialogTitle": "Submit Exam",
+      "submitDialogContent": "Are you sure you want to submit your exam? You cannot change your answers after submission.",
+      "submitDialogProgress": "You have answered {{answered}} out of {{total}} questions.",
+      "results": {
+        "congratulations": "🎉 Congratulations!",
+        "passed": "You passed the exam!",
+        "notPassed": "📝 Exam Results",
+        "didNotPass": "You did not pass the exam",
+        "score": "Score: {{score}} / {{total}} points",
+        "percentage": "Percentage: {{percentage}}%",
+        "passingScore": "Passing score: 65%",
+        "takeAgain": "Take Exam Again"
+      }
     }
   },
   "features": {
@@ -59,6 +84,44 @@
       "loading": "Loading quotes...",
       "error": "Failed to load quotes",
       "refresh": "Refresh Quotes"
+    },
+    "exam": {
+      "instructions": {
+        "title": "International English Language Exam",
+        "welcome": "Welcome to the Language Proficiency Validation Exam",
+        "description": "Below, you will find a set of 20 multiple-choice questions designed to assess your knowledge in reading comprehension, grammar, vocabulary, and overall language usage.",
+        "generalInstructions": "General Instructions:",
+        "virtualMode": "This exam is conducted entirely online and is limited to one attempt per participant.",
+        "passingScore": "To pass, you must correctly answer at least 13 out of 20 questions (minimum score: 65%).",
+        "timeLimit": "There is no time limit, but it is strongly recommended to complete the exam within 45 minutes.",
+        "important": "Important Notes:",
+        "noTranslators": "The use of translation tools, external assistance, or third-party support is strictly prohibited.",
+        "noRefresh": "Do not close or refresh the page once the exam has started.",
+        "systemRecording": "The system may record your email address, submission time, and number of attempts (only one attempt is allowed).",
+        "fraudDetection": "Any indication of fraudulent behavior will result in the immediate invalidation of the exam.",
+        "recommendations": "Recommendations Before Starting:",
+        "stableConnection": "Ensure a stable internet connection throughout the exam.",
+        "quietPlace": "Choose a quiet and distraction-free environment.",
+        "readCarefully": "Read each question carefully before answering.",
+        "oneAnswer": "Select only one answer per question.",
+        "clickSubmit": "Upon completion, click the \"Submit\" button to register your responses.",
+        "languageNote": "All questions are in English. Instructions are displayed in both languages for your convenience."
+      },
+      "questions": {
+        "fillGap": "Fill in the gaps the correct answer ({{points}} points)",
+        "multipleChoice": "Choose the correct answer ({{points}} points)",
+        "reading": "Read the following passage carefully. Then, answer the questions below by selecting the correct option. ({{points}} points)",
+        "matching": "Match each word in Column A with its correct meaning or image in Column B ({{points}} points)",
+        "verbToBe": "Fill in the gaps with the correct form of the verb to be - IS - ARE - AM ({{points}} point)",
+        "writing": "Writing Section ({{points}} point)",
+        "columnA": "Column A (Words)",
+        "columnB": "Column B (Meanings)",
+        "gap": "Gap {{number}}",
+        "matchWord": "Match {{word}}",
+        "yourAnswer": "Your answer",
+        "writeParagraph": "Write your paragraph here (5-8 sentences)...",
+        "sentenceLimit": "Minimum 5 sentences, maximum 8 sentences"
+      }
     }
   },
   "errors": {

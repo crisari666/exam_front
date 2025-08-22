@@ -21,6 +21,7 @@ const AboutPage: FC = () => {
           <ul>
             <li><a href="/">{t('navigation.home')}</a></li>
             <li><a href="/dashboard">{t('navigation.dashboard')}</a></li>
+            <li><a href="/exam">{t('navigation.exam')}</a></li>
           </ul>
         </nav>
       </main>

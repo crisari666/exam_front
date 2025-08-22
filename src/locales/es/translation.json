@@ -24,6 +24,7 @@
     "home": "Inicio",
     "about": "Acerca de",
     "dashboard": "Panel",
+    "exam": "Examen",
     "language": "Idioma",
     "english": "Inglés",
     "spanish": "Español"
@@ -44,6 +45,30 @@
       "progress": "Tu Progreso",
       "recent": "Actividades Recientes",
       "stats": "Estadísticas"
+    },
+    "exam": {
+      "title": "Examen Internacional de Inglés",
+      "start": "Comenzar Examen",
+      "loading": "Cargando examen...",
+      "error": "Error al cargar el examen. Por favor, inténtalo de nuevo más tarde.",
+      "progress": "Progreso: {{answered}} / {{total}} preguntas respondidas",
+      "previous": "Anterior",
+      "next": "Siguiente",
+      "submit": "Enviar Examen",
+      "submitConfirm": "Enviar Examen",
+      "submitDialogTitle": "Enviar Examen",
+      "submitDialogContent": "¿Estás seguro de que quieres enviar tu examen? No podrás cambiar tus respuestas después del envío.",
+      "submitDialogProgress": "Has respondido {{answered}} de {{total}} preguntas.",
+      "results": {
+        "congratulations": "🎉 ¡Felicitaciones!",
+        "passed": "¡Aprobaste el examen!",
+        "notPassed": "📝 Resultados del Examen",
+        "didNotPass": "No aprobaste el examen",
+        "score": "Puntuación: {{score}} / {{total}} puntos",
+        "percentage": "Porcentaje: {{percentage}}%",
+        "passingScore": "Puntuación de aprobación: 65%",
+        "takeAgain": "Tomar Examen de Nuevo"
+      }
     }
   },
   "features": {
@@ -59,6 +84,44 @@
       "loading": "Cargando citas...",
       "error": "Error al cargar citas",
       "refresh": "Actualizar Citas"
+    },
+    "exam": {
+      "instructions": {
+        "title": "Examen Internacional de Inglés",
+        "welcome": "Bienvenido(a) al examen de validación de nivel de idiomas",
+        "description": "A continuación, encontrarás un conjunto de 20 preguntas de opción múltiple diseñadas para evaluar tus conocimientos en comprensión lectora, gramática, vocabulario y uso del idioma.",
+        "generalInstructions": "Instrucciones Generales:",
+        "virtualMode": "Este examen se presenta en modalidad virtual y solo está permitido una vez por persona.",
+        "passingScore": "Para aprobar, deberás responder correctamente al menos 13 preguntas (65% de aciertos).",
+        "timeLimit": "No hay límite de tiempo establecido, pero se recomienda completarlo en un máximo de 45 minutos.",
+        "important": "Importante:",
+        "noTranslators": "No se permite el uso de traductores, ayudas externas ni la asistencia de terceros.",
+        "noRefresh": "No cierres ni actualices la página una vez iniciado el formulario.",
+        "systemRecording": "El sistema puede registrar tu correo, hora de envío y número de intentos (Solo se permite un intento).",
+        "fraudDetection": "En caso de detección de fraude, el examen será anulado inmediatamente.",
+        "recommendations": "Recomendaciones antes de comenzar:",
+        "stableConnection": "Asegúrate de tener conexión a internet estable.",
+        "quietPlace": "Elige un lugar tranquilo y sin distracciones.",
+        "readCarefully": "Lee con atención cada pregunta antes de responder.",
+        "oneAnswer": "Marca solo una respuesta por pregunta.",
+        "clickSubmit": "Al finalizar, asegúrate de hacer clic en el botón \"Enviar\" para registrar tus respuestas.",
+        "languageNote": "Todas las preguntas están en inglés. Las instrucciones se muestran en ambos idiomas para tu comodidad."
+      },
+      "questions": {
+        "fillGap": "Completa los espacios con la respuesta correcta ({{points}} puntos)",
+        "multipleChoice": "Elige la respuesta correcta ({{points}} puntos)",
+        "reading": "Lee el siguiente pasaje cuidadosamente. Luego, responde las preguntas a continuación seleccionando la opción correcta. ({{points}} puntos)",
+        "matching": "Relaciona cada palabra de la Columna A con su significado o imagen correcta en la Columna B ({{points}} puntos)",
+        "verbToBe": "Completa los espacios con la forma correcta del verbo to be - IS - ARE - AM ({{points}} punto)",
+        "writing": "Sección de Escritura ({{points}} punto)",
+        "columnA": "Columna A (Palabras)",
+        "columnB": "Columna B (Significados)",
+        "gap": "Espacio {{number}}",
+        "matchWord": "Relacionar {{word}}",
+        "yourAnswer": "Tu respuesta",
+        "writeParagraph": "Escribe tu párrafo aquí (5-8 oraciones)...",
+        "sentenceLimit": "Mínimo 5 oraciones, máximo 8 oraciones"
+      }
     }
   },
   "errors": {
