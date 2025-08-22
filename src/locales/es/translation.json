@@ -1,0 +1,70 @@
+{
+  "common": {
+    "loading": "Cargando...",
+    "error": "Error",
+    "success": "Éxito",
+    "cancel": "Cancelar",
+    "save": "Guardar",
+    "delete": "Eliminar",
+    "edit": "Editar",
+    "add": "Agregar",
+    "search": "Buscar",
+    "filter": "Filtrar",
+    "sort": "Ordenar",
+    "next": "Siguiente",
+    "previous": "Anterior",
+    "submit": "Enviar",
+    "close": "Cerrar",
+    "back": "Atrás",
+    "home": "Inicio",
+    "about": "Acerca de",
+    "dashboard": "Panel"
+  },
+  "navigation": {
+    "home": "Inicio",
+    "about": "Acerca de",
+    "dashboard": "Panel",
+    "language": "Idioma",
+    "english": "Inglés",
+    "spanish": "Español"
+  },
+  "pages": {
+    "home": {
+      "title": "Bienvenido a English Exam",
+      "subtitle": "Mejora tus habilidades en inglés con nuestra plataforma integral de exámenes",
+      "description": "Practica y evalúa tu conocimiento del inglés con nuestros ejercicios interactivos y evaluaciones."
+    },
+    "about": {
+      "title": "Acerca de Nosotros",
+      "description": "Estamos dedicados a ayudar a los estudiantes a mejorar sus habilidades en el idioma inglés a través de evaluaciones integrales y materiales de práctica."
+    },
+    "dashboard": {
+      "title": "Panel",
+      "welcome": "¡Bienvenido de vuelta!",
+      "progress": "Tu Progreso",
+      "recent": "Actividades Recientes",
+      "stats": "Estadísticas"
+    }
+  },
+  "features": {
+    "counter": {
+      "title": "Contador",
+      "increment": "Incrementar",
+      "decrement": "Decrementar",
+      "reset": "Reiniciar",
+      "currentValue": "Valor actual: {{count}}"
+    },
+    "quotes": {
+      "title": "Citas",
+      "loading": "Cargando citas...",
+      "error": "Error al cargar citas",
+      "refresh": "Actualizar Citas"
+    }
+  },
+  "errors": {
+    "general": "Algo salió mal",
+    "notFound": "Página no encontrada",
+    "unauthorized": "Acceso no autorizado",
+    "networkError": "Error de red"
+  }
+}

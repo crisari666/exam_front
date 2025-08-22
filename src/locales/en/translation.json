@@ -1,0 +1,70 @@
+{
+  "common": {
+    "loading": "Loading...",
+    "error": "Error",
+    "success": "Success",
+    "cancel": "Cancel",
+    "save": "Save",
+    "delete": "Delete",
+    "edit": "Edit",
+    "add": "Add",
+    "search": "Search",
+    "filter": "Filter",
+    "sort": "Sort",
+    "next": "Next",
+    "previous": "Previous",
+    "submit": "Submit",
+    "close": "Close",
+    "back": "Back",
+    "home": "Home",
+    "about": "About",
+    "dashboard": "Dashboard"
+  },
+  "navigation": {
+    "home": "Home",
+    "about": "About",
+    "dashboard": "Dashboard",
+    "language": "Language",
+    "english": "English",
+    "spanish": "Spanish"
+  },
+  "pages": {
+    "home": {
+      "title": "Welcome to English Exam",
+      "subtitle": "Improve your English skills with our comprehensive exam platform",
+      "description": "Practice and test your English knowledge with our interactive exercises and assessments."
+    },
+    "about": {
+      "title": "About Us",
+      "description": "We are dedicated to helping students improve their English language skills through comprehensive testing and practice materials."
+    },
+    "dashboard": {
+      "title": "Dashboard",
+      "welcome": "Welcome back!",
+      "progress": "Your Progress",
+      "recent": "Recent Activities",
+      "stats": "Statistics"
+    }
+  },
+  "features": {
+    "counter": {
+      "title": "Counter",
+      "increment": "Increment",
+      "decrement": "Decrement",
+      "reset": "Reset",
+      "currentValue": "Current value: {{count}}"
+    },
+    "quotes": {
+      "title": "Quotes",
+      "loading": "Loading quotes...",
+      "error": "Failed to load quotes",
+      "refresh": "Refresh Quotes"
+    }
+  },
+  "errors": {
+    "general": "Something went wrong",
+    "notFound": "Page not found",
+    "unauthorized": "Unauthorized access",
+    "networkError": "Network error occurred"
+  }
+}
