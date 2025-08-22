@@ -33,12 +33,12 @@ export const CodeValidationForm: React.FC = () => {
     event.preventDefault();
     
     if (!code.trim()) {
-      setLocalError('Please enter a code');
+      setLocalError(t('features.participant.codeValidation.codeRequired'));
       return;
     }
 
     if (code.length < 3) {
-      setLocalError('Code must be at least 3 characters long');
+      setLocalError(t('features.participant.codeValidation.codeMinLength'));
       return;
     }
 
@@ -74,22 +74,22 @@ export const CodeValidationForm: React.FC = () => {
           textAlign: 'center'
         }}
       >
-        <Typography variant="h4" component="h1" gutterBottom sx={{ mb: 3 }}>
-          {t('participant.codeValidation.title', 'Participant Access')}
+        <Typography variant="h5" gutterBottom sx={{ mb: 3 }}>
+          {t('features.participant.codeValidation.title')}
         </Typography>
         
         <Typography variant="body1" color="text.secondary" sx={{ mb: 4 }}>
-          {t('participant.codeValidation.description', 'Please enter your access code to begin the exam')}
+          {t('features.participant.codeValidation.description')}
         </Typography>
 
         <Box component="form" onSubmit={handleSubmit} sx={{ width: '100%' }}>
           <TextField
             fullWidth
-            label={t('participant.codeValidation.codeLabel', 'Access Code')}
+            label={t('features.participant.codeValidation.codeLabel')}
             value={code}
             onChange={handleCodeChange}
             onKeyPress={handleKeyPress}
-            placeholder="Enter your code"
+            placeholder={t('features.participant.codeValidation.codePlaceholder')}
             variant="outlined"
             size="medium"
             sx={{ mb: 3 }}
@@ -107,19 +107,29 @@ export const CodeValidationForm: React.FC = () => {
             variant="contained"
             size="large"
             disabled={isLoading || !code.trim()}
-            sx={{ py: 1.5 }}
+            sx={{
+              py: 1.5,
+              '&.Mui-disabled': {
+                backgroundColor: 'rgba(0, 0, 0, 0.12)',
+                color: 'rgba(0, 0, 0, 0.38)',
+                cursor: 'not-allowed'
+              },
+              '&:hover': {
+                backgroundColor: 'primary.main'
+              }
+            }}
           >
             {isLoading ? (
               <CircularProgress size={24} color="inherit" />
             ) : (
-              t('participant.codeValidation.submit', 'Validate Code')
+              t('features.participant.codeValidation.submit')
             )}
           </Button>
         </Box>
 
         <Box sx={{ mt: 3 }}>
           <Typography variant="caption" color="text.secondary">
-            {t('participant.codeValidation.help', 'Need help? Contact your exam administrator')}
+            {t('features.participant.codeValidation.help')}
           </Typography>
         </Box>
       </Paper>

@@ -91,7 +91,10 @@
         "description": "Por favor, ingresa tu código de acceso para comenzar el examen",
         "codeLabel": "Código de Acceso",
         "submit": "Validar Código",
-        "help": "¿Necesitas ayuda? Contacta a tu administrador del examen"
+        "help": "¿Necesitas ayuda? Contacta a tu administrador del examen",
+        "codeRequired": "Por favor, ingresa un código",
+        "codeMinLength": "El código debe tener al menos 3 caracteres",
+        "codePlaceholder": "Ingresa tu código"
       },
       "info": {
         "welcome": "¡Bienvenido!",

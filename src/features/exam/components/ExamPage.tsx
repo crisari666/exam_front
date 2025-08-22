@@ -16,7 +16,6 @@ import {
   DialogActions,
   LinearProgress,
 } from '@mui/material';
-import { useTranslation } from 'react-i18next';
 import { useGetExamQuestionsQuery } from '../examApiSlice';
 import {
   startExam,

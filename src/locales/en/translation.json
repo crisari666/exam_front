@@ -91,7 +91,10 @@
         "description": "Please enter your access code to begin the exam",
         "codeLabel": "Access Code",
         "submit": "Validate Code",
-        "help": "Need help? Contact your exam administrator"
+        "help": "Need help? Contact your exam administrator",
+        "codeRequired": "Please enter a code",
+        "codeMinLength": "Code must be at least 3 characters long",
+        "codePlaceholder": "Enter your code"
       },
       "info": {
         "welcome": "Welcome!",

@@ -48,25 +48,25 @@ export const ParticipantInfo: React.FC = () => {
         display: 'flex',
         justifyContent: 'center',
         alignItems: 'center',
-        minHeight: '60vh',
-        padding: 3
+        minHeight: '50vh',
+        padding: 2
       }}
     >
       <Paper
         elevation={3}
         sx={{
-          padding: 4,
+          padding: 3,
           maxWidth: 500,
           width: '100%'
         }}
       >
-        <Box sx={{ textAlign: 'center', mb: 3 }}>
+        <Box sx={{ textAlign: 'center', mb: 2 }}>
           <Avatar
             sx={{
               width: 80,
               height: 80,
               fontSize: '2rem',
-              margin: '0 auto 16px',
+              margin: '0 auto 12px',
               bgcolor: 'primary.main'
             }}
           >
@@ -74,7 +74,7 @@ export const ParticipantInfo: React.FC = () => {
           </Avatar>
           
           <Typography variant="h4" component="h1" gutterBottom>
-            {t('participant.info.welcome', 'Welcome!')}
+            {t('features.participant.info.welcome')}
           </Typography>
           
           <Typography variant="h6" color="primary" gutterBottom>
@@ -82,17 +82,17 @@ export const ParticipantInfo: React.FC = () => {
           </Typography>
         </Box>
 
-        <Divider sx={{ my: 3 }} />
+        <Divider sx={{ my: 1 }} />
 
-        <Box sx={{ mb: 4 }}>
-          <Box sx={{ display: 'flex', alignItems: 'center', mb: 2 }}>
+        <Box sx={{ mb: 1 }}>
+          <Box sx={{ display: 'flex', alignItems: 'center', mb: 1.5 }}>
             <Email sx={{ mr: 2, color: 'text.secondary' }} />
             <Typography variant="body1">
               {currentParticipant.email}
             </Typography>
           </Box>
           
-          <Box sx={{ display: 'flex', alignItems: 'center', mb: 2 }}>
+          <Box sx={{ display: 'flex', alignItems: 'center', mb: 1.5 }}>
             <Phone sx={{ mr: 2, color: 'text.secondary' }} />
             <Typography variant="body1">
               {currentParticipant.contact}
@@ -102,12 +102,12 @@ export const ParticipantInfo: React.FC = () => {
           <Box sx={{ display: 'flex', alignItems: 'center' }}>
             <Person sx={{ mr: 2, color: 'text.secondary' }} />
             <Typography variant="body1">
-              {t('participant.info.participantId', 'Participant ID')}: {currentParticipant.id}
+              {t('features.participant.info.participantId')}: {currentParticipant.id}
             </Typography>
           </Box>
         </Box>
 
-        <Divider sx={{ my: 3 }} />
+        <Divider sx={{ my: 1 }} />
 
         <Box sx={{ display: 'flex', gap: 2, justifyContent: 'center' }}>
           <Button
@@ -117,7 +117,7 @@ export const ParticipantInfo: React.FC = () => {
             onClick={handleStartExam}
             sx={{ minWidth: 150 }}
           >
-            {t('participant.info.startExam', 'Start Exam')}
+            {t('features.participant.info.startExam')}
           </Button>
           
           <Button
@@ -126,13 +126,13 @@ export const ParticipantInfo: React.FC = () => {
             onClick={handleLogout}
             sx={{ minWidth: 150 }}
           >
-            {t('participant.info.logout', 'Logout')}
+            {t('features.participant.info.logout')}
           </Button>
         </Box>
 
-        <Box sx={{ mt: 3, textAlign: 'center' }}>
+        <Box sx={{ mt: 2, textAlign: 'center' }}>
           <Typography variant="caption" color="text.secondary">
-            {t('participant.info.ready', 'You are now ready to take your English language exam')}
+            {t('features.participant.info.ready')}
           </Typography>
         </Box>
       </Paper>

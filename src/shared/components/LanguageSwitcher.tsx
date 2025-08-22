@@ -29,6 +29,10 @@ export const LanguageSwitcher: React.FC<LanguageSwitcherProps> = ({ className = 
             fontSize: '0.875rem',
             px: 1.5,
             py: 0.5,
+            borderColor: currentLanguage === 'en' ? 'primary.main' : 'grey.400',
+            '&:hover': {
+              borderColor: currentLanguage === 'en' ? 'primary.main' : 'grey.600',
+            }
           }}
         >
           EN
@@ -44,6 +48,10 @@ export const LanguageSwitcher: React.FC<LanguageSwitcherProps> = ({ className = 
             fontSize: '0.875rem',
             px: 1.5,
             py: 0.5,
+            borderColor: currentLanguage === 'es' ? 'primary.main' : 'grey.400',
+            '&:hover': {
+              borderColor: currentLanguage === 'es' ? 'primary.main' : 'grey.600',
+            }
           }}
         >
           ES
