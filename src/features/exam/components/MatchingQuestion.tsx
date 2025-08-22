@@ -30,7 +30,7 @@ const MatchingQuestion: React.FC<MatchingQuestionProps> = ({ question, answer, o
         </Typography>
         
         <Grid container spacing={2}>
-          <Grid item xs={6}>
+          <Grid size={6} >
             <Typography variant="subtitle1" fontWeight="bold" gutterBottom>
               Column A (Words)
             </Typography>
@@ -43,7 +43,7 @@ const MatchingQuestion: React.FC<MatchingQuestionProps> = ({ question, answer, o
             ))}
           </Grid>
           
-          <Grid item xs={6}>
+          <Grid size={6} >
             <Typography variant="subtitle1" fontWeight="bold" gutterBottom>
               Column B (Meanings)
             </Typography>

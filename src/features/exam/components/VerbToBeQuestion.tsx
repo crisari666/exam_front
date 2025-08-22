@@ -39,7 +39,7 @@ const VerbToBeQuestion: React.FC<VerbToBeQuestionProps> = ({ question, answer, o
         
         <Grid container spacing={1}>
           {localAnswers.map((answer, index) => (
-            <Grid item xs={2} key={index}>
+            <Grid size={2}   key={index}>
               <FormControl fullWidth size="small">
                 <InputLabel>Gap {index + 1}</InputLabel>
                 <Select

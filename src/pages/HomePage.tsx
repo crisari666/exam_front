@@ -1,6 +1,6 @@
 import type { FC } from 'react';
 import { useTranslation } from 'react-i18next';
-import { LanguageSwitcher } from '../shared/components';
+import { AppHeader } from '../shared/components';
 import './Pages.css';
 
 const HomePage: FC = () => {
@@ -8,12 +8,9 @@ const HomePage: FC = () => {
 
   return (
     <div className="home-page">
-      <header className="page-header">
-        <h1>{t('pages.home.title')}</h1>
-        <LanguageSwitcher />
-      </header>
+      <AppHeader title={t('pages.home.title')} />
       
-      <main>
+      <main style={{ padding: '24px' }}>
         <h2>{t('pages.home.subtitle')}</h2>
         <p>{t('pages.home.description')}</p>
         

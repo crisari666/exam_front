@@ -1,6 +1,6 @@
 import type { FC } from 'react';
 import { useTranslation } from 'react-i18next';
-import { LanguageSwitcher } from '../shared/components';
+import { AppHeader } from '../shared/components';
 import './Pages.css';
 
 const AboutPage: FC = () => {
@@ -8,12 +8,9 @@ const AboutPage: FC = () => {
 
   return (
     <div className="about-page">
-      <header className="page-header">
-        <h1>{t('pages.about.title')}</h1>
-        <LanguageSwitcher />
-      </header>
+      <AppHeader title={t('pages.about.title')} />
       
-      <main>
+      <main style={{ padding: '24px' }}>
         <p>{t('pages.about.description')}</p>
         <p>We follow a feature-first architecture for better code organization.</p>
         

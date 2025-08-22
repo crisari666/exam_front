@@ -1,6 +1,6 @@
 import type { FC } from 'react';
 import { useTranslation } from 'react-i18next';
-import { LanguageSwitcher } from '../shared/components';
+import { AppHeader } from '../shared/components';
 import './Pages.css';
 
 const DashboardPage: FC = () => {
@@ -8,12 +8,9 @@ const DashboardPage: FC = () => {
 
   return (
     <div className="dashboard-page">
-      <header className="page-header">
-        <h1>{t('pages.dashboard.title')}</h1>
-        <LanguageSwitcher />
-      </header>
+      <AppHeader title={t('pages.dashboard.title')} />
       
-      <main>
+      <main style={{ padding: '24px' }}>
         <p>{t('pages.dashboard.welcome')}</p>
         <p>Here you can manage your application.</p>
         

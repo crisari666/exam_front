@@ -1,4 +1,5 @@
 import React from 'react';
+import { Button, ButtonGroup, Box } from '@mui/material';
 import { useTranslation } from 'react-i18next';
 
 interface LanguageSwitcherProps {
@@ -15,23 +16,39 @@ export const LanguageSwitcher: React.FC<LanguageSwitcherProps> = ({ className = 
   const currentLanguage = i18n.language;
 
   return (
-    <div className={`language-switcher ${className}`}>
-      <button
-        type="button"
-        onClick={() => handleLanguageChange('en')}
-        className={`lang-btn ${currentLanguage === 'en' ? 'active' : ''}`}
-        aria-label="Switch to English"
-      >
-        EN
-      </button>
-      <button
-        type="button"
-        onClick={() => handleLanguageChange('es')}
-        className={`lang-btn ${currentLanguage === 'es' ? 'active' : ''}`}
-        aria-label="Cambiar a Español"
-      >
-        ES
-      </button>
-    </div>
+    <Box className={className}>
+      <ButtonGroup variant="outlined" size="small" aria-label="language switcher">
+        <Button
+          onClick={() => handleLanguageChange('en')}
+          variant={currentLanguage === 'en' ? 'contained' : 'outlined'}
+          color={currentLanguage === 'en' ? 'primary' : 'inherit'}
+          sx={{
+            minWidth: '48px',
+            fontWeight: currentLanguage === 'en' ? 600 : 400,
+            textTransform: 'none',
+            fontSize: '0.875rem',
+            px: 1.5,
+            py: 0.5,
+          }}
+        >
+          EN
+        </Button>
+        <Button
+          onClick={() => handleLanguageChange('es')}
+          variant={currentLanguage === 'es' ? 'contained' : 'outlined'}
+          color={currentLanguage === 'es' ? 'primary' : 'inherit'}
+          sx={{
+            minWidth: '48px',
+            fontWeight: currentLanguage === 'es' ? 600 : 400,
+            textTransform: 'none',
+            fontSize: '0.875rem',
+            px: 1.5,
+            py: 0.5,
+          }}
+        >
+          ES
+        </Button>
+      </ButtonGroup>
+    </Box>
   );
 };

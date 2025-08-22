@@ -1,6 +1,5 @@
 export { default as ExamPage } from './ExamPage';
 export { default as ExamInstructions } from './ExamInstructions';
-export { default as ExamLanguageSwitcher } from './ExamLanguageSwitcher';
 export { default as FillGapQuestion } from './FillGapQuestion';
 export { default as MultipleChoiceQuestion } from './MultipleChoiceQuestion';
 export { default as ReadingQuestion } from './ReadingQuestion';
