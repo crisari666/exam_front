@@ -21,7 +21,7 @@ import {
   Security,
 } from '@mui/icons-material';
 import { useTranslation } from 'react-i18next';
-import { AppHeader } from '../../../shared/components';
+
 
 interface ExamInstructionsProps {
   onStart: () => void;
@@ -32,9 +32,7 @@ const ExamInstructions: React.FC<ExamInstructionsProps> = ({ onStart }) => {
   const isSpanish = i18n.language === 'es';
 
   return (
-    <>
-      <AppHeader />
-      <Container maxWidth="lg" sx={{ mt: 4 }}>
+    <Container maxWidth="lg" sx={{ mt: 4 }}>
         <Paper sx={{ p: 4 }}>
           <Box sx={{ mb: 2 }}>
             <Typography variant="h3" gutterBottom align="center" color="primary">
@@ -264,7 +262,6 @@ const ExamInstructions: React.FC<ExamInstructionsProps> = ({ onStart }) => {
           </Box>
         </Paper>
       </Container>
-    </>
   );
 };
 

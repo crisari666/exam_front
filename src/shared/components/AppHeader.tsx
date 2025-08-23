@@ -5,6 +5,7 @@ import {
   Typography,
   Box,
   Container,
+  Button,
 } from '@mui/material';
 import { LanguageSwitcher } from './LanguageSwitcher';
 import logoImage from '../../assets/img/logo.png';
@@ -12,11 +13,17 @@ import logoImage from '../../assets/img/logo.png';
 interface AppHeaderProps {
   title?: string;
   showLogo?: boolean;
+  participant?: {
+    name: string;
+    code: string;
+    onLogout: () => void;
+  };
 }
 
 export const AppHeader: React.FC<AppHeaderProps> = ({ 
   title = 'International English Language Exam',
-  showLogo = true 
+  showLogo = true,
+  participant
 }) => {
   return (
     <AppBar position="static" elevation={2} sx={{ backgroundColor: 'background.paper' }}>
@@ -49,8 +56,37 @@ export const AppHeader: React.FC<AppHeaderProps> = ({
             {title}
           </Typography>
           
-          <Box sx={{ ml: 'auto' }}>
+          <Box sx={{ ml: 'auto', display: 'flex', alignItems: 'center', gap: 2 }}>
             <LanguageSwitcher />
+            {participant && (
+              <Box sx={{ 
+                display: 'flex', 
+                alignItems: 'center', 
+                gap: 2,
+                backgroundColor: 'background.default',
+                borderRadius: 2,
+                p: 1.5,
+                border: '1px solid',
+                borderColor: 'divider'
+              }}>
+                <Box>
+                  <Typography variant="body2" fontWeight="bold" color="text.primary">
+                    {participant.name}
+                  </Typography>
+                  <Typography variant="caption" color="text.secondary">
+                    Code: {participant.code}
+                  </Typography>
+                </Box>
+                <Button 
+                  size="small" 
+                  variant="outlined" 
+                  onClick={participant.onLogout}
+                  color="error"
+                >
+                  Logout
+                </Button>
+              </Box>
+            )}
           </Box>
         </Toolbar>
       </Container>

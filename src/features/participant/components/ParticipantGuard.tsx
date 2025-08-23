@@ -4,7 +4,6 @@ import {
   Box, 
   Typography, 
   Alert, 
-  Button,
   CircularProgress,
   Paper 
 } from '@mui/material';
@@ -69,38 +68,13 @@ const ParticipantGuard: React.FC<ParticipantGuardProps> = ({ children }) => {
 
   return (
     <>
-      <AppHeader />
-      <Box sx={{ 
-        position: 'fixed', 
-        top: 16, 
-        right: 16, 
-        zIndex: 1000,
-        backgroundColor: 'background.paper',
-        borderRadius: 2,
-        p: 2,
-        boxShadow: 2,
-        border: '1px solid',
-        borderColor: 'divider'
-      }}>
-        <Box display="flex" alignItems="center" gap={2}>
-          <Box>
-            <Typography variant="body2" fontWeight="bold">
-              {t('features.participant.guard.participant')}: {currentParticipant.name}
-            </Typography>
-            <Typography variant="caption" color="text.secondary">
-              {t('features.participant.guard.code')}: {currentParticipant.code}
-            </Typography>
-          </Box>
-          <Button 
-            size="small" 
-            variant="outlined" 
-            onClick={handleLogout}
-            color="error"
-          >
-            {t('common.logout')}
-          </Button>
-        </Box>
-      </Box>
+      <AppHeader 
+        participant={{
+          name: currentParticipant.name,
+          code: currentParticipant.code,
+          onLogout: handleLogout
+        }}
+      />
       {children}
     </>
   );
