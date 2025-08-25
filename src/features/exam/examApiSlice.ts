@@ -2,7 +2,9 @@ import { createApi, fetchBaseQuery } from '@reduxjs/toolkit/query/react';
 import { Question } from './examSlice';
 
 // Environment configuration
-const BASE_URL = import.meta.env.VITE_API_BASE_URL || 'http://localhost:3000/api/';
+const BASE_URL = import.meta.env.VITE_API_BASE_URL;
+
+console.log('BASE_URL', BASE_URL);
 
 // Types for customer validation
 export interface CustomerValidationResponse {
