@@ -55,17 +55,8 @@ const ExamPage: React.FC = () => {
   const [startExamError, setStartExamError] = useState<string | null>(null);
   const stepperContainerRef = React.useRef<HTMLDivElement>(null);
 
-  useEffect(() => {
-    console.log('ExamPage: questions effect triggered', { 
-      questions: questions?.length, 
-      examStateQuestions: examState.questions.length,
-      examState: examState,
-      isLoading,
-      error
-    });
-    
+  useEffect(() => {    
     if (questions && !examState.questions.length) {
-      console.log('ExamPage: Dispatching setQuestions with', questions.length, 'questions');
       dispatch(setQuestions(questions));
       // Clear the start exam message once questions are loaded
       setStartExamMessage(null);
@@ -90,8 +81,7 @@ const ExamPage: React.FC = () => {
     try {
       setStartExamError(null); // Clear any previous errors
       setStartExamMessage(null); // Clear any previous success messages
-      
-      console.log('ExamPage: Starting exam for participant:', participant);
+    
       
       if (!participant?.code) {
         throw new Error('No participant code available');
@@ -115,16 +105,10 @@ const ExamPage: React.FC = () => {
         throw new Error('Exam is already completed');
       }
 
-      setIsStartingExam(true);
-      console.log('ExamPage: Calling start exam API with code:', participant.code);
-      
+      setIsStartingExam(true);      
       // Call the start exam API first
       const response = await startExamMutation(participant.code).unwrap();
-      
-      console.log('ExamPage: Start exam API response:', response);
-      
       if (response.examStarted) {
-        console.log('ExamPage: Exam started successfully, updating local state');
         // Start exam locally only after successful API call
         dispatch(startExam());
         setShowInstructions(false);
@@ -437,38 +421,21 @@ const ExamPage: React.FC = () => {
   };
 
   const renderExamContent = () => {
-    console.log('ExamPage: renderExamContent called', {
-      isLoading,
-      error: error ? 'Has error' : 'No error',
-      showInstructions,
-      examState: {
-        isStarted: examState.isStarted,
-        questionsLength: examState.questions.length,
-        isCompleted: examState.isCompleted
-      },
-      startExamMessage: startExamMessage ? 'Has message' : 'No message',
-      participant: participant ? 'Has participant' : 'No participant'
-    });
-
     if (isLoading) {
-      console.log('ExamPage: Rendering loading state');
       return <ExamLoadingState />;
     }
 
     if (error) {
-      console.error('ExamPage: Error details:', error);
       return <ExamErrorState error={error} />;
     }
 
     if (showInstructions) {
-      console.log('ExamPage: Rendering instructions state');
       return <ExamInstructions onStart={handleStartExam} isLoading={isStartingExam} error={startExamError} />;
     }
 
     // Check if exam is started and questions are loaded
     if (examState.isStarted && examState.questions.length > 0) {
       if (examState.isCompleted) {
-        console.log('ExamPage: Rendering completed state');
         return (
           <ExamCompletedState
             score={examState.score}
@@ -477,19 +444,15 @@ const ExamPage: React.FC = () => {
           />
         );
       }
-
-      console.log('ExamPage: Rendering main exam state');
       return renderMainExamContent();
     }
 
     // Show start message only if exam is started but questions are not yet loaded
     if (startExamMessage && examState.isStarted && examState.questions.length === 0) {
-      console.log('ExamPage: Rendering start message (waiting for questions)');
       return <ExamStartMessage message={startExamMessage} />;
     }
 
     // If we reach here, something is wrong with the state
-    console.log('ExamPage: Unexpected state - exam not started or no questions');
     return null;
   };
 

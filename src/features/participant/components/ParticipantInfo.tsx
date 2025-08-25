@@ -109,7 +109,7 @@ export const ParticipantInfo: React.FC = () => {
             </Box>
           </Box>
           
-          <Box sx={{ display: 'flex', alignItems: 'center' }}>
+          {/* <Box sx={{ display: 'flex', alignItems: 'center' }}>
             <Phone sx={{ mr: 2, color: 'primary.main' }} />
             <Box>
               <Typography variant="caption" color="text.secondary" display="block">
@@ -119,7 +119,7 @@ export const ParticipantInfo: React.FC = () => {
                 {currentParticipant.contact}
               </Typography>
             </Box>
-          </Box>
+          </Box> */}
         </Box>
 
         <Divider sx={{ my: 1 }} />
