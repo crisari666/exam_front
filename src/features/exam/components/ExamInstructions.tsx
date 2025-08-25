@@ -20,14 +20,17 @@ import {
   Timer,
   Security,
 } from '@mui/icons-material';
+import { CircularProgress } from '@mui/material';
 import { useTranslation } from 'react-i18next';
 
 
 interface ExamInstructionsProps {
   onStart: () => void;
+  isLoading?: boolean;
+  error?: string | null;
 }
 
-const ExamInstructions: React.FC<ExamInstructionsProps> = ({ onStart }) => {
+const ExamInstructions: React.FC<ExamInstructionsProps> = ({ onStart, isLoading = false, error = null }) => {
   const { t, i18n } = useTranslation();
   const isSpanish = i18n.language === 'es';
 
@@ -241,6 +244,14 @@ const ExamInstructions: React.FC<ExamInstructionsProps> = ({ onStart }) => {
 
           <Divider sx={{ my: 2 }} />
 
+          {error && (
+            <Alert severity="error" sx={{ mb: 2 }}>
+              <Typography variant="body2">
+                {error}
+              </Typography>
+            </Alert>
+          )}
+
           <Alert severity="info" sx={{ mb: 2 }}>
             <Typography variant="body2">
               {isSpanish
@@ -256,8 +267,9 @@ const ExamInstructions: React.FC<ExamInstructionsProps> = ({ onStart }) => {
               size="large"
               onClick={onStart}
               sx={{ px: 4, py: 1.5, fontSize: '1.1rem' }}
+              disabled={isLoading}
             >
-              {isSpanish ? 'Comenzar Examen' : 'Start Exam'}
+              {isLoading ? <CircularProgress size={24} color="inherit" /> : (isSpanish ? 'Comenzar Examen' : 'Start Exam')}
             </Button>
           </Box>
         </Paper>

@@ -6,3 +6,7 @@ export { default as ReadingQuestion } from './ReadingQuestion';
 export { default as MatchingQuestion } from './MatchingQuestion';
 export { default as VerbToBeQuestion } from './VerbToBeQuestion';
 export { default as WritingQuestion } from './WritingQuestion';
+export { default as ExamLoadingState } from './ExamLoadingState';
+export { default as ExamErrorState } from './ExamErrorState';
+export { default as ExamStartMessage } from './ExamStartMessage';
+export { default as ExamCompletedState } from './ExamCompletedState';

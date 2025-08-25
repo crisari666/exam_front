@@ -1,3 +1,6 @@
+// Environment configuration
+const BASE_URL = import.meta.env.VITE_API_BASE_URL || 'http://localhost:3000/api/';
+
 export interface Participant {
   id: string;
   name: string;
@@ -16,56 +19,146 @@ export interface CodeValidationResponse {
   error?: string;
 }
 
-// Mock data for development
-const mockParticipants: Participant[] = [
-  {
-    id: '1',
-    name: 'John Doe',
-    email: 'john.doe@example.com',
-    contact: '+1-555-0123',
-    code: 'ABC123'
-  },
-  {
-    id: '2',
-    name: 'Jane Smith',
-    email: 'jane.smith@example.com',
-    contact: '+1-555-0456',
-    code: 'DEF456'
-  },
-  {
-    id: '3',
-    name: 'Bob Johnson',
-    email: 'bob.johnson@example.com',
-    contact: '+1-555-0789',
-    code: 'GHI789'
-  }
-];
-
+// Backend customer validation response type
+interface BackendCustomerResponse {
+  _id: string;
+  code: string;
+  email: string;
+  name: string;
+  lastName: string;
+  phone: string;
+  createdAt: string;
+  updatedAt: string;
+  __v: number;
+  examFinishDate: string | null;
+  examPassed: boolean | null;
+  examPercentage: number | null;
+  examQuestionResults: Record<number, boolean> | null;
+  examTotalPoints: number | null;
+  examTotalScore: number | null;
+  isExamCompleted: boolean;
+  examStartDate: string | null;
+}
 export class ParticipantService {
   static async validateCode(request: CodeValidationRequest): Promise<CodeValidationResponse> {
-    // Simulate API delay
-    await new Promise(resolve => setTimeout(resolve, 500));
-    
-    const participant = mockParticipants.find(p => p.code === request.code);
-    
-    if (!participant) {
+    try {
+      console.log('ParticipantService: Validating code:', request.code);
+      console.log('ParticipantService: Using BASE_URL:', BASE_URL);
+      
+      const response = await fetch(`${BASE_URL}customers/code/${request.code}`, {
+        method: 'GET',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+      });
+
+      console.log('ParticipantService: Response status:', response.status);
+      console.log('ParticipantService: Response ok:', response.ok);
+
+      if (response.status === 404) {
+        // Customer not found or exam already completed
+        return {
+          success: false,
+          error: 'Invalid code or exam already completed. Please check and try again.'
+        };
+      }
+
+      if (!response.ok) {
+        throw new Error(`HTTP error! status: ${response.status}`);
+      }
+
+      const data: BackendCustomerResponse = await response.json();
+
+      console.log('ParticipantService: Response data:', data);
+      
+      if (!data || !data.code) {
+        console.log('ParticipantService: Invalid data structure:', data);
+        return {
+          success: false,
+          error: 'Invalid response from server. Please try again.'
+        };
+      }
+
+      // Check if exam is already completed
+      if (data.isExamCompleted) {
+        return {
+          success: false,
+          error: 'You have already completed this exam. You cannot take it again.'
+        };
+      }
+
+      // Check if exam is already started
+      // if (data.examStartDate && !data.examFinishDate) {
+      //   return {
+      //     success: false,
+      //     error: 'You have already started this exam. Please continue from where you left off.'
+      //   };
+      // }
+
+      // Create participant object from backend response
+      const participant: Participant = {
+        id: data._id, // Using the actual _id from backend
+        name: `${data.name} ${data.lastName}`, // Combine name and lastName
+        email: data.email,
+        contact: data.phone,
+        code: data.code,
+      };
+
+      return {
+        success: true,
+        participant
+      };
+    } catch (error) {
+      console.error('Error validating participant code:', error);
       return {
         success: false,
-        error: 'Invalid code. Please check and try again.'
+        error: 'Network error. Please check your connection and try again.'
       };
     }
-    
-    return {
-      success: true,
-      participant
-    };
   }
   
   static async getParticipantById(id: string): Promise<Participant | null> {
-    // Simulate API delay
-    await new Promise(resolve => setTimeout(resolve, 300));
-    
-    const participant = mockParticipants.find(p => p.id === id);
-    return participant || null;
+    try {
+      const response = await fetch(`${BASE_URL}customers/code/${id}`, {
+        method: 'GET',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+      });
+
+      if (!response.ok) {
+        return null;
+      }
+
+      const data: BackendCustomerResponse = await response.json();
+      
+      if (!data || !data.code) {
+        return null;
+      }
+
+      // Check if exam is already completed
+      if (data.isExamCompleted) {
+        return null;
+      }
+
+      // Check if exam is already started
+      if (data.examStartDate && !data.examFinishDate) {
+        return null;
+      }
+
+      // Create participant object from backend response
+      const participant: Participant = {
+        id: data._id,
+        name: `${data.name} ${data.lastName}`,
+        email: data.email,
+        contact: data.phone,
+        code: data.code,
+      };
+
+      return participant;
+    } catch (error) {
+      console.error('Error getting participant by ID:', error);
+      return null;
+    }
   }
 }

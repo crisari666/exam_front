@@ -9,14 +9,13 @@ import {
   Step,
   StepLabel,
   Paper,
-  Alert,
   Dialog,
   DialogTitle,
   DialogContent,
   DialogActions,
   LinearProgress,
 } from '@mui/material';
-import { useGetExamQuestionsQuery } from '../examApiSlice';
+import { useGetExamQuestionsQuery, useSubmitExamResultsMutation, useStartExamMutation } from '../examApiSlice';
 import {
   startExam,
   setQuestions,
@@ -29,6 +28,7 @@ import {
 } from '../examSlice';
 import { RootState } from '../../../app/store';
 import { ParticipantGuard } from '../../participant/components';
+import { selectCurrentParticipant } from '../../participant/participant-slice';
 import FillGapQuestion from './FillGapQuestion';
 import MultipleChoiceQuestion from './MultipleChoiceQuestion';
 import ReadingQuestion from './ReadingQuestion';
@@ -36,29 +36,132 @@ import MatchingQuestion from './MatchingQuestion';
 import VerbToBeQuestion from './VerbToBeQuestion';
 import WritingQuestion from './WritingQuestion';
 import ExamInstructions from './ExamInstructions';
-
+import ExamLoadingState from './ExamLoadingState';
+import ExamErrorState from './ExamErrorState';
+import ExamStartMessage from './ExamStartMessage';
+import ExamCompletedState from './ExamCompletedState';
 
 const ExamPage: React.FC = () => {
   const dispatch = useDispatch();
   const { data: questions, isLoading, error } = useGetExamQuestionsQuery();
+  const [submitExamResults] = useSubmitExamResultsMutation();
+  const [startExamMutation] = useStartExamMutation();
   const examState = useSelector((state: RootState) => state.exam);
+  const participant = useSelector(selectCurrentParticipant);
   const [showInstructions, setShowInstructions] = useState(true);
   const [showSubmitDialog, setShowSubmitDialog] = useState(false);
+  const [isStartingExam, setIsStartingExam] = useState(false);
+  const [startExamMessage, setStartExamMessage] = useState<string | null>(null);
+  const [startExamError, setStartExamError] = useState<string | null>(null);
+  const stepperContainerRef = React.useRef<HTMLDivElement>(null);
 
   useEffect(() => {
+    console.log('ExamPage: questions effect triggered', { 
+      questions: questions?.length, 
+      examStateQuestions: examState.questions.length,
+      examState: examState,
+      isLoading,
+      error
+    });
+    
     if (questions && !examState.questions.length) {
+      console.log('ExamPage: Dispatching setQuestions with', questions.length, 'questions');
       dispatch(setQuestions(questions));
+      // Clear the start exam message once questions are loaded
+      setStartExamMessage(null);
     }
-  }, [questions, dispatch, examState.questions.length]);
+  }, [questions, dispatch, examState.questions.length, isLoading, error]);
 
-  const handleStartExam = () => {
+  useEffect(() => {
+    if (stepperContainerRef.current && examState.isStarted) {
+      const container = stepperContainerRef.current;
+      const stepWidth = 60; // Approximate width of each step
+      const containerWidth = container.clientWidth;
+      const scrollPosition = (examState.currentQuestionIndex * stepWidth) - (containerWidth / 2) + (stepWidth / 2);
+      
+      container.scrollTo({
+        left: Math.max(0, scrollPosition),
+        behavior: 'smooth'
+      });
+    }
+  }, [examState.currentQuestionIndex, examState.isStarted]);
+
+  const handleStartExam = async () => {
     try {
-      dispatch(startExam());
-      setShowInstructions(false);
+      setStartExamError(null); // Clear any previous errors
+      setStartExamMessage(null); // Clear any previous success messages
+      
+      console.log('ExamPage: Starting exam for participant:', participant);
+      
+      if (!participant?.code) {
+        throw new Error('No participant code available');
+      }
+
+      if (!participant.id || !participant.name) {
+        throw new Error('Participant information is incomplete');
+      }
+
+      if (participant.code.trim().length === 0) {
+        throw new Error('Participant code is empty');
+      }
+
+      // Check if participant has already started an exam (this should be handled by the backend, but we can add a local check)
+      if (examState.isStarted) {
+        throw new Error('Exam is already started');
+      }
+
+      // Check if participant has already completed an exam (this should be handled by the backend, but we can add a local check)
+      if (examState.isCompleted) {
+        throw new Error('Exam is already completed');
+      }
+
+      setIsStartingExam(true);
+      console.log('ExamPage: Calling start exam API with code:', participant.code);
+      
+      // Call the start exam API first
+      const response = await startExamMutation(participant.code).unwrap();
+      
+      console.log('ExamPage: Start exam API response:', response);
+      
+      if (response.examStarted) {
+        console.log('ExamPage: Exam started successfully, updating local state');
+        // Start exam locally only after successful API call
+        dispatch(startExam());
+        setShowInstructions(false);
+        setStartExamMessage(`Exam started successfully for ${response.customer.name} ${response.customer.lastName}`);
+      } else {
+        throw new Error('Failed to start exam on server');
+      }
     } catch (error) {
       console.error('Failed to start exam:', error);
-      // Show error message to user
-      alert('You must be a validated participant to start the exam. Please validate your participant code first.');
+      let errorMessage = 'Failed to start exam. Please try again.';
+      
+      if (error instanceof Error) {
+        if (error.message.includes('fetch')) {
+          errorMessage = 'Network error. Please check your internet connection and try again.';
+        } else if (error.message.includes('timeout')) {
+          errorMessage = 'Request timeout. Please try again.';
+        } else {
+          errorMessage = error.message;
+        }
+      } else if (typeof error === 'object' && error !== null && 'status' in error) {
+        const status = (error as any).status;
+        if (status === 401) {
+          errorMessage = 'Unauthorized. Please validate your participant code again.';
+        } else if (status === 403) {
+          errorMessage = 'Access denied. You may not be eligible to take this exam.';
+        } else if (status === 404) {
+          errorMessage = 'Participant not found. Please check your code and try again.';
+        } else if (status >= 500) {
+          errorMessage = 'Server error. Please try again later.';
+        } else {
+          errorMessage = `Error ${status}: Please try again.`;
+        }
+      }
+      
+      setStartExamError(errorMessage);
+    } finally {
+      setIsStartingExam(false);
     }
   };
 
@@ -98,13 +201,49 @@ const ExamPage: React.FC = () => {
     }
   };
 
-  const handleSubmitExam = () => {
+  const handleSubmitExam = async () => {
     try {
+      // Calculate exam results
+      const totalPoints = examState.totalPoints;
+      const totalScore = examState.score;
+      const percentage = (totalScore / totalPoints) * 100;
+      const passed = percentage >= 65;
+
+      // Create question results map
+      const questionResults: Record<number, boolean> = {};
+      examState.questions.forEach((question) => {
+        const answer = examState.answers[question.id];
+        if (answer) {
+          // For now, we'll mark as passed if answered (you may want to implement actual scoring logic)
+          questionResults[question.id] = true;
+        } else {
+          questionResults[question.id] = false;
+        }
+      });
+
+      // Get customer code from participant state (you may need to adjust this based on your participant structure)
+      const customerCode = participant?.code || 'PARTICIPANT_CODE'; // This should come from your participant validation
+
+      // Prepare payload for backend
+      const examResultPayload = {
+        customerCode,
+        percentage,
+        questionResults,
+        totalScore,
+        totalPoints,
+        passed,
+        timestamp: new Date().toISOString(),
+      };
+
+      // Send results to backend
+      await submitExamResults(examResultPayload).unwrap();
+
+      // Complete exam locally
       dispatch(completeExam());
       setShowSubmitDialog(false);
     } catch (error) {
-      console.error('Failed to submit exam:', error);
-      alert('Session expired. Please validate your participant code again.');
+      console.error('Failed to submit exam results:', error);
+      alert('Failed to submit exam results. Please try again.');
     }
   };
 
@@ -175,87 +314,9 @@ const ExamPage: React.FC = () => {
     }
   };
 
-  const renderExamContent = () => {
-    if (isLoading) {
-      console.log('ExamPage: Rendering loading state');
-      return (
-        <Container maxWidth="lg" sx={{ mt: 4 }}>
-          <Box sx={{ mb: 2 }}>
-            <Typography variant="h6" sx={{ mt: 2 }}>
-              Loading exam...
-            </Typography>
-          </Box>
-          <LinearProgress />
-        </Container>
-      );
-    }
-
-    if (error) {
-      return (
-        <Container maxWidth="lg" sx={{ mt: 4 }}>
-          <Box sx={{ mb: 2 }}>
-            <Typography variant="h6" sx={{ mt: 2 }}>
-              Error loading exam
-            </Typography>
-          </Box>
-          <Alert severity="error">
-            Error loading exam. Please try again later.
-          </Alert>
-        </Container>
-      );
-    }
-
-    if (showInstructions) {
-      console.log('ExamPage: Rendering instructions state');
-      return <ExamInstructions onStart={handleStartExam} />;
-    }
-
-    if (examState.isCompleted) {
-      const percentage = (examState.score / examState.totalPoints) * 100;
-      const isPassed = percentage >= 65;
-
-      return (
-        <Container maxWidth="lg" sx={{ mt: 4 }}>
-          <Paper sx={{ p: 4, textAlign: 'center' }}>
-            <Box sx={{ mb: 2 }}>
-              <Typography variant="h4" gutterBottom>
-                {isPassed ? '🎉 Congratulations!' : '📝 Exam Results'}
-              </Typography>
-            </Box>
-            
-            <Typography variant="h6" color={isPassed ? 'success.main' : 'error.main'} gutterBottom>
-              {isPassed ? 'You passed the exam!' : 'You did not pass the exam'}
-            </Typography>
-            
-            <Box sx={{ my: 3 }}>
-              <Typography variant="h5">
-                Score: {examState.score} / {examState.totalPoints} points
-              </Typography>
-              <Typography variant="h6" color="text.secondary">
-                Percentage: {percentage.toFixed(1)}%
-              </Typography>
-              <Typography variant="body1" color="text.secondary">
-                Passing score: 65%
-              </Typography>
-            </Box>
-            
-            <Button variant="contained" onClick={handleResetExam} sx={{ mr: 2 }}>
-              Take Exam Again
-            </Button>
-          </Paper>
-        </Container>
-      );
-    }
-
-    if (!examState.isStarted || !examState.questions.length) {
-      console.log('ExamPage: Exam not started or no questions');
-      return null;
-    }
-
+  const renderMainExamContent = () => {
     const answeredQuestions = Object.keys(examState.answers).length;
     const progress = (answeredQuestions / examState.questions.length) * 100;
-
-    console.log('ExamPage: Rendering main exam state');
 
     return (
       <Container maxWidth="lg" sx={{ mt: 4 }}>
@@ -267,24 +328,27 @@ const ExamPage: React.FC = () => {
             </Typography>
           </Box>
           
-          <Box sx={{ 
-            overflowX: 'auto', 
-            '&::-webkit-scrollbar': {
-              height: 8,
-            },
-            '&::-webkit-scrollbar-track': {
-              backgroundColor: '#f1f1f1',
-              borderRadius: 4,
-            },
-            '&::-webkit-scrollbar-thumb': {
-              backgroundColor: '#c1c1c1',
-              borderRadius: 4,
-              '&:hover': {
-                backgroundColor: '#a8a8a8',
+          <Box 
+            ref={stepperContainerRef}
+            sx={{ 
+              overflowX: 'auto', 
+              '&::-webkit-scrollbar': {
+                height: 8,
               },
-            },
-            mb: 3 
-          }}>
+              '&::-webkit-scrollbar-track': {
+                backgroundColor: '#f1f1f1',
+                borderRadius: 4,
+              },
+              '&::-webkit-scrollbar-thumb': {
+                backgroundColor: '#c1c1c1',
+                borderRadius: 4,
+                '&:hover': {
+                  backgroundColor: '#a8a8a8',
+                },
+              },
+              mb: 3 
+            }}
+          >
             <Stepper 
               activeStep={examState.currentQuestionIndex} 
               sx={{ 
@@ -370,6 +434,63 @@ const ExamPage: React.FC = () => {
         </Dialog>
       </Container>
     );
+  };
+
+  const renderExamContent = () => {
+    console.log('ExamPage: renderExamContent called', {
+      isLoading,
+      error: error ? 'Has error' : 'No error',
+      showInstructions,
+      examState: {
+        isStarted: examState.isStarted,
+        questionsLength: examState.questions.length,
+        isCompleted: examState.isCompleted
+      },
+      startExamMessage: startExamMessage ? 'Has message' : 'No message',
+      participant: participant ? 'Has participant' : 'No participant'
+    });
+
+    if (isLoading) {
+      console.log('ExamPage: Rendering loading state');
+      return <ExamLoadingState />;
+    }
+
+    if (error) {
+      console.error('ExamPage: Error details:', error);
+      return <ExamErrorState error={error} />;
+    }
+
+    if (showInstructions) {
+      console.log('ExamPage: Rendering instructions state');
+      return <ExamInstructions onStart={handleStartExam} isLoading={isStartingExam} error={startExamError} />;
+    }
+
+    // Check if exam is started and questions are loaded
+    if (examState.isStarted && examState.questions.length > 0) {
+      if (examState.isCompleted) {
+        console.log('ExamPage: Rendering completed state');
+        return (
+          <ExamCompletedState
+            score={examState.score}
+            totalPoints={examState.totalPoints}
+            onResetExam={handleResetExam}
+          />
+        );
+      }
+
+      console.log('ExamPage: Rendering main exam state');
+      return renderMainExamContent();
+    }
+
+    // Show start message only if exam is started but questions are not yet loaded
+    if (startExamMessage && examState.isStarted && examState.questions.length === 0) {
+      console.log('ExamPage: Rendering start message (waiting for questions)');
+      return <ExamStartMessage message={startExamMessage} />;
+    }
+
+    // If we reach here, something is wrong with the state
+    console.log('ExamPage: Unexpected state - exam not started or no questions');
+    return null;
   };
 
   return (

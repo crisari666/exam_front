@@ -1,5 +1,6 @@
 import { createSlice, createAsyncThunk, PayloadAction } from '@reduxjs/toolkit';
 import { Participant, CodeValidationRequest, CodeValidationResponse } from '../../services/participant-service';
+import { ExamState } from '../exam/examSlice';
 
 export interface ParticipantState {
   currentParticipant: Participant | null;
@@ -80,5 +81,15 @@ export const selectParticipantError = (state: { participant: ParticipantState })
 
 export const selectIsParticipantLoading = (state: { participant: ParticipantState }) => 
   state.participant.isLoading;
+
+export const selectCanParticipantIngress = (state: { participant: ParticipantState; exam: ExamState }) => {
+  // If exam is already started, allow continuation
+  if (state.exam.isStarted) {
+    return true;
+  }
+  
+  // Otherwise, check if participant is properly validated
+  return state.participant.isCodeValidated && state.participant.currentParticipant !== null;
+};
 
 export default participantSlice.reducer;
