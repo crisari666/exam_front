@@ -143,22 +143,21 @@ const mockQuestions: Question[] = [
   {
     id: 17,
     type: 'matching',
-    question: 'Match each word with its correct meaning:',
-    correctAnswer: ['Sierra', 'Drill', 'Scissors', 'Hammer', 'Wheelbarrow'],
+    question: 'Match each tool image with its correct Spanish name:',
+    correctAnswer: ['Sierra', 'Drill', 'Scissors', 'Hammer'],
     points: 2,
     matchingPairs: [
       { word: 'Sierra', meaning: 'Saw' },
       { word: 'Drill', meaning: 'Taladro' },
       { word: 'Scissors', meaning: 'Tijeras' },
       { word: 'Hammer', meaning: 'Martillo' },
-      { word: 'Wheelbarrow', meaning: 'Carretilla' },
     ],
   },
   // Verb to be questions (1 point)
   {
     id: 18,
     type: 'verb-to-be',
-    question: 'Fill in the gaps with the correct form of the verb to be (IS - ARE - AM):\nMy new friends _____ Daniel and Juan Camilo. They ____ students in my school. Daniel _______ is tall and slim, and Juan _____ short. I _____ happy to be their friend. We ____ in fifth grade. We ____ in the school basketball team. I _____ tall and slim. I ______ 10 years old. We _____ good basketball players.',
+    question: 'Fill in the gaps with the correct form of the verb to be (IS - ARE - AM):\nMy new friends ___ Daniel and Juan Camilo. They ___ students in my school. Daniel ___ is tall and slim, and Juan ___ short. I ___ happy to be their friend. We ___ in fifth grade. We ___ in the school basketball team. I ___ tall and slim. I ___ 10 years old. We ___ good basketball players.',
     correctAnswer: ['are', 'are', 'is', 'is', 'am', 'are', 'are', 'am', 'am', 'are'],
     points: 1,
   },

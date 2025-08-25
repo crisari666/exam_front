@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { Card, CardContent, Typography, Box, Select, MenuItem, FormControl, InputLabel, Grid } from '@mui/material';
+import { Card, CardContent, Typography, Box, TextField } from '@mui/material';
 import { Question } from '../examSlice';
 
 interface VerbToBeQuestionProps {
@@ -20,43 +20,79 @@ const VerbToBeQuestion: React.FC<VerbToBeQuestionProps> = ({ question, answer, o
 
   const verbOptions = ['is', 'are', 'am'];
 
-  return (
-    <Card variant="outlined" sx={{ mb: 2 }}>
-      <CardContent>
-        <Typography variant="h6" gutterBottom>
+  // Function to render the question text with underlined input fields
+  const renderQuestionWithInputs = () => {
+    const questionText = question.question;
+    const parts = questionText.split('___');
+    
+    return (
+      <Box sx={{ mb: 3 }}>
+        <Typography variant="body1" sx={{ mb: 2 }}>
           Fill in the gaps with the correct form of the verb to be - IS - ARE - AM ({question.points} point)
         </Typography>
         
-        <Typography variant="body1" sx={{ mb: 2 }}>
-          {question.question}
-        </Typography>
+        <Box sx={{ display: 'flex', flexWrap: 'wrap', alignItems: 'center', gap: 1 }}>
+          {parts.map((part, index) => (
+            <React.Fragment key={index}>
+              <Typography variant="body1" component="span">
+                {part}
+              </Typography>
+              {index < parts.length - 1 && (
+                <TextField
+                  size="small"
+                  value={localAnswers[index] || ''}
+                  onChange={(e) => handleAnswerChange(index, e.target.value)}
+                  placeholder="Type here"
+                  sx={{
+                    width: '120px',
+                    '& .MuiOutlinedInput-root': {
+                      height: '28px',
+                      '& fieldset': {
+                        border: 'none',
+                        borderBottom: '2px solid #1976d2',
+                        borderRadius: 0,
+                      },
+                      '&:hover fieldset': {
+                        borderBottom: '2px solid #1565c0',
+                      },
+                      '&.Mui-focused fieldset': {
+                        borderBottom: '2px solid #1976d2',
+                      },
+                    },
+                    '& .MuiInputBase-input': {
+                      textAlign: 'center',
+                      fontWeight: 'bold',
+                      color: '#1976d2',
+                      padding: '4px 8px',
+                      height: '28px',
+                      fontSize: '14px',
+                    },
+                  }}
+                  inputProps={{
+                    maxLength: 10,
+                  }}
+                />
+              )}
+            </React.Fragment>
+          ))}
+        </Box>
+      </Box>
+    );
+  };
+
+  return (
+    <Card variant="outlined" sx={{ mb: 2 }}>
+      <CardContent>
+        {renderQuestionWithInputs()}
         
-        <Box sx={{ mb: 2 }}>
-          <Typography variant="body2" component="pre" sx={{ whiteSpace: 'pre-wrap', fontFamily: 'inherit' }}>
-            {question.question}
+        <Box sx={{ mt: 2, p: 2, bgcolor: 'grey.50', borderRadius: 1 }}>
+          <Typography variant="body2" color="text.secondary" gutterBottom>
+            <strong>Available options:</strong> {verbOptions.join(' • ')}
+          </Typography>
+          <Typography variant="caption" color="text.secondary">
+            Type your answers in the underlined fields above. Use: is, are, or am.
           </Typography>
         </Box>
-        
-        <Grid container spacing={1}>
-          {localAnswers.map((answer, index) => (
-            <Grid size={2}   key={index}>
-              <FormControl fullWidth size="small">
-                <InputLabel>Gap {index + 1}</InputLabel>
-                <Select
-                  value={answer}
-                  label={`Gap ${index + 1}`}
-                  onChange={(e) => handleAnswerChange(index, e.target.value)}
-                >
-                  {verbOptions.map((option) => (
-                    <MenuItem key={option} value={option}>
-                      {option}
-                    </MenuItem>
-                  ))}
-                </Select>
-              </FormControl>
-            </Grid>
-          ))}
-        </Grid>
       </CardContent>
     </Card>
   );

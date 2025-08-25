@@ -267,21 +267,59 @@ const ExamPage: React.FC = () => {
             </Typography>
           </Box>
           
-          <Stepper activeStep={examState.currentQuestionIndex} sx={{ mb: 3 }}>
-            {examState.questions.map((_, index) => (
-              <Step key={index}>
-                <StepLabel>
-                  <Button
-                    size="small"
-                    onClick={() => handleGoToQuestion(index)}
-                    sx={{ minWidth: 'auto' }}
-                  >
-                    {index + 1}
-                  </Button>
-                </StepLabel>
-              </Step>
-            ))}
-          </Stepper>
+          <Box sx={{ 
+            overflowX: 'auto', 
+            '&::-webkit-scrollbar': {
+              height: 8,
+            },
+            '&::-webkit-scrollbar-track': {
+              backgroundColor: '#f1f1f1',
+              borderRadius: 4,
+            },
+            '&::-webkit-scrollbar-thumb': {
+              backgroundColor: '#c1c1c1',
+              borderRadius: 4,
+              '&:hover': {
+                backgroundColor: '#a8a8a8',
+              },
+            },
+            mb: 3 
+          }}>
+            <Stepper 
+              activeStep={examState.currentQuestionIndex} 
+              sx={{ 
+                minWidth: 'max-content',
+                '& .MuiStep-root': {
+                  minWidth: 'auto',
+                }
+              }}
+            >
+              {examState.questions.map((_, index) => (
+                <Step key={index}>
+                  <StepLabel>
+                    <Button
+                      size="small"
+                      onClick={() => handleGoToQuestion(index)}
+                      sx={{ 
+                        minWidth: 'auto',
+                        px: 1,
+                        py: 0.5,
+                        fontSize: '0.875rem',
+                        fontWeight: examState.currentQuestionIndex === index ? 'bold' : 'normal',
+                        backgroundColor: examState.currentQuestionIndex === index ? 'primary.main' : 'transparent',
+                        color: examState.currentQuestionIndex === index ? 'white' : 'inherit',
+                        '&:hover': {
+                          backgroundColor: examState.currentQuestionIndex === index ? 'primary.dark' : 'action.hover',
+                        }
+                      }}
+                    >
+                      {index + 1}
+                    </Button>
+                  </StepLabel>
+                </Step>
+              ))}
+            </Stepper>
+          </Box>
         </Paper>
 
         {renderQuestion()}

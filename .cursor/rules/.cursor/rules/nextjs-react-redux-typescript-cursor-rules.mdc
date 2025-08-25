@@ -112,7 +112,7 @@ This comprehensive guide outlines best practices, conventions, and standards for
     - Apply composition patterns to create modular, reusable components.
 
     Styling Guidelines
-    - Use material ui for styling
+    - Use material ui 7 for styling
 
     Localization
 
