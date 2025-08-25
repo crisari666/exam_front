@@ -1,5 +1,5 @@
 import React from 'react';
-import { Card, CardContent, Typography, RadioGroup, FormControlLabel, Radio, Box } from '@mui/material';
+import { Card, CardContent, Typography, RadioGroup, FormControlLabel, Radio } from '@mui/material';
 import { Question } from '../examSlice';
 
 interface FillGapQuestionProps {

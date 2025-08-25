@@ -1,5 +1,5 @@
 import React from 'react';
-import { Card, CardContent, Typography, RadioGroup, FormControlLabel, Radio, Box, Paper } from '@mui/material';
+import { Card, CardContent, Typography, RadioGroup, FormControlLabel, Radio, Paper } from '@mui/material';
 import { Question } from '../examSlice';
 
 interface ReadingQuestionProps {

@@ -121,7 +121,7 @@ export const examSlice = createAppSlice({
       });
       state.score = totalScore;
     }),
-    resetExam: create.reducer((state) => {
+    resetExam: create.reducer(() => {
       return { ...initialState };
     }),
   }),

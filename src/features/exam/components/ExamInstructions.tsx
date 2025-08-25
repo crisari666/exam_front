@@ -31,7 +31,7 @@ interface ExamInstructionsProps {
 }
 
 const ExamInstructions: React.FC<ExamInstructionsProps> = ({ onStart, isLoading = false, error = null }) => {
-  const { t, i18n } = useTranslation();
+  const { i18n } = useTranslation();
   const isSpanish = i18n.language === 'es';
 
   return (
