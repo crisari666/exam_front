@@ -8,7 +8,7 @@ import {
   Button,
   Divider
 } from '@mui/material';
-import { Person, Email, Phone, ExitToApp } from '@mui/icons-material';
+import { Person, Email, ExitToApp } from '@mui/icons-material';
 import { useTranslation } from 'react-i18next';
 import { useNavigate } from 'react-router-dom';
 import { RootState } from '../../../app/store';
