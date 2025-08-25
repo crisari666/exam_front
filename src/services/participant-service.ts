@@ -43,20 +43,13 @@ interface BackendCustomerResponse {
 }
 export class ParticipantService {
   static async validateCode(request: CodeValidationRequest): Promise<CodeValidationResponse> {
-    try {
-      console.log('ParticipantService: Validating code:', request.code);
-      console.log('ParticipantService: Using BASE_URL:', BASE_URL);
-      
+    try {      
       const response = await fetch(`${BASE_URL}customers/code/${request.code}`, {
         method: 'GET',
         headers: {
           'Content-Type': 'application/json',
         },
       });
-
-      console.log('ParticipantService: Response status:', response.status);
-      console.log('ParticipantService: Response ok:', response.ok);
-
       if (response.status === 404) {
         // Customer not found or exam already completed
         return {
@@ -71,10 +64,8 @@ export class ParticipantService {
 
       const data: BackendCustomerResponse = await response.json();
 
-      console.log('ParticipantService: Response data:', data);
       
       if (!data || !data.code) {
-        console.log('ParticipantService: Invalid data structure:', data);
         return {
           success: false,
           error: 'Invalid response from server. Please try again.'

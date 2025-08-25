@@ -99,6 +99,8 @@
       "info": {
         "welcome": "Welcome!",
         "participantId": "Participant ID",
+        "email": "Email Address",
+        "contact": "Contact Number",
         "startExam": "Start Exam",
         "logout": "Logout",
         "ready": "You are now ready to take your English language exam"

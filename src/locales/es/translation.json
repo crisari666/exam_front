@@ -99,6 +99,8 @@
       "info": {
         "welcome": "¡Bienvenido!",
         "participantId": "ID del Participante",
+        "email": "Correo Electrónico",
+        "contact": "Número de Contacto",
         "startExam": "Comenzar Examen",
         "logout": "Cerrar Sesión",
         "ready": "Ahora estás listo para tomar tu examen de inglés"

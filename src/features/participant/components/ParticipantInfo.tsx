@@ -84,26 +84,41 @@ export const ParticipantInfo: React.FC = () => {
 
         <Divider sx={{ my: 1 }} />
 
-        <Box sx={{ mb: 1 }}>
-          <Box sx={{ display: 'flex', alignItems: 'center', mb: 1.5 }}>
-            <Email sx={{ mr: 2, color: 'text.secondary' }} />
-            <Typography variant="body1">
-              {currentParticipant.email}
-            </Typography>
+        <Box sx={{ mb: 2 }}>
+          <Box sx={{ display: 'flex', alignItems: 'center', mb: 2 }}>
+            <Person sx={{ mr: 2, color: 'primary.main' }} />
+            <Box>
+              <Typography variant="caption" color="text.secondary" display="block">
+                {t('features.participant.info.participantId')}
+              </Typography>
+              <Typography variant="body1" fontWeight="medium">
+                {currentParticipant.id}
+              </Typography>
+            </Box>
           </Box>
-          
-          <Box sx={{ display: 'flex', alignItems: 'center', mb: 1.5 }}>
-            <Phone sx={{ mr: 2, color: 'text.secondary' }} />
-            <Typography variant="body1">
-              {currentParticipant.contact}
-            </Typography>
+
+          <Box sx={{ display: 'flex', alignItems: 'center', mb: 2 }}>
+            <Email sx={{ mr: 2, color: 'primary.main' }} />
+            <Box>
+              <Typography variant="caption" color="text.secondary" display="block">
+                {t('features.participant.info.email')}
+              </Typography>
+              <Typography variant="body1" fontWeight="medium">
+                {currentParticipant.email}
+              </Typography>
+            </Box>
           </Box>
           
           <Box sx={{ display: 'flex', alignItems: 'center' }}>
-            <Person sx={{ mr: 2, color: 'text.secondary' }} />
-            <Typography variant="body1">
-              {t('features.participant.info.participantId')}: {currentParticipant.id}
-            </Typography>
+            <Phone sx={{ mr: 2, color: 'primary.main' }} />
+            <Box>
+              <Typography variant="caption" color="text.secondary" display="block">
+                {t('features.participant.info.contact')}
+              </Typography>
+              <Typography variant="body1" fontWeight="medium">
+                {currentParticipant.contact}
+              </Typography>
+            </Box>
           </Box>
         </Box>
 
